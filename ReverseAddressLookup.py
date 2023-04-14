@@ -31,7 +31,5 @@ def sendRequest(address):
     url = "https://api.ekata.com/3.0/location"
 
     response = requests.get(url, params=parameters)
-    data = response.json()
-
-    return data
+    return response.json()
 

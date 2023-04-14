@@ -33,7 +33,7 @@ class GooglePlaces(object):
         """
 
         geolocator = GoogleV3(api_key=googleKey)
-        location = str(loc_x)+","+str(loc_y)
+        location = f"{str(loc_x)},{str(loc_y)}"
         locations = geolocator.reverse(location)
         address = locations[0].address.split(",")
         print("Address: ")
@@ -83,7 +83,7 @@ class GooglePlaces(object):
             The signal radius
         """
 
-        location = str(loc_x)+","+str(loc_y)
+        location = f"{str(loc_x)},{str(loc_y)}"
         endpoint_url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
         places = []
         params = {
@@ -117,11 +117,8 @@ class GooglePlaces(object):
         places = self.search_places_by_coordinate(loc_x,loc_y)
         d = {'types': []}
         df = pd.DataFrame(data=d)
-        setter =3
-        if(len(places)<3):
-            setter = len(places)
-
-        for z in range(0,setter):
+        setter = min(len(places), 3)
+        for z in range(setter):
             x = places[z]
             if "price_level" in x:
                 f = {'name': [x["name"]],'types': [x["types"]],'price_level': [x["price_level"]]}
@@ -149,7 +146,7 @@ class ZillowAPI(object):
 
         # Used to get the address, could be replaced with GoogleAPI class
         geolocator = GoogleV3(api_key=googleKey)
-        locations = geolocator.reverse(str(loc_x) + ", " + str(loc_y))
+        locations = geolocator.reverse(f"{str(loc_x)}, {str(loc_y)}")
 
         # Format address for query to Zillow
         f = locations[0].address.split(",")
@@ -181,5 +178,4 @@ class ZillowAPI(object):
         """
 
         deep_search_response = self.zillow_data.get_deep_search_results(self.address, self.zipcode)
-        result = GetDeepSearchResults(deep_search_response)
-        return result
+        return GetDeepSearchResults(deep_search_response)

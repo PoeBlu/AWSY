@@ -8,7 +8,9 @@ def getCoordinates(bssid):
     """
 
     # Formats bssid into AA:AA:AA:AA:AA for WiGLE query
-    formatted = "".join([bssid[i:i+2] + ":" for i in range(0, len(bssid), 2)])[:-1]
+    formatted = "".join(
+        [f"{bssid[i:i + 2]}:" for i in range(0, len(bssid), 2)]
+    )[:-1]
 
     print("Searching WiGLE.net:", formatted)
 
